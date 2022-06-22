@@ -80,3 +80,11 @@ footer img {
     margin: 5px;
     cursor: pointer;   
 }
+
+.over {
+    background-color: #66D3FA;
+}
+
+.down {
+    background-color: blueviolet;
+}
