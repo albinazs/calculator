@@ -20,6 +20,11 @@ const equal = document.querySelector('#equal');
 
 display.textContent = "0";
 const displayOutput = [];
+const n1 = [];
+const n2 = [];
+let operator = "";
+const operators = ["/", "*", "-", "+"];
+const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
 btn1.addEventListener('click', () => populateScreen("1"));
 btn2.addEventListener('click', () => populateScreen("2"));
@@ -36,23 +41,79 @@ divide.addEventListener('click', () => populateScreen("/"));
 multiply.addEventListener('click', () => populateScreen("*"));
 substract.addEventListener('click', () => populateScreen("-"));
 add.addEventListener('click', () => populateScreen("+"));
-equal.addEventListener('click', () => populateScreen("="));
-// doesnt work 
-clearAll.addEventListener('click', clear);
-// doenst work because populate screen is not called
-del.addEventListener('click', () => displayOutput.pop[length-1]);
+equal.addEventListener('click', toCalculate);
+clearAll.addEventListener('click', clearScreen);
+del.addEventListener('click', deleteLast);
 
 function populateScreen(input) { 
-    if(displayOutput.length === 12) {
+    let lastInput = displayOutput[displayOutput.length - 1];
+
+    if (displayOutput.length === 12) {
         return;
-    }  
+    } 
+
+    if (operators.includes(lastInput) && operators.includes(input)) {
+        displayOutput.pop(lastInput);
+    }
+
+    //if(input === "." && displayOutput.find(item => item ===".")) {
+        //return;
+    //}
+
     displayOutput.push(input);
     display.textContent = displayOutput.join('');
+    updateInputVars(input);
 }
 
-function clear() {
+function updateInputVars(input) {
+    if (operators.includes(input)) {
+        operator = input;
+        console.log(operator);
+    }
+    else if (numbers.includes(input) && (!operators.some(operator => displayOutput.includes(operator)))) 
+    {
+        n1.push(input);
+        console.log(n1);
+    } else if (numbers.includes(input) && (operators.some(operator => displayOutput.includes(operator)))) {
+        n2.push(input);
+        console.log(n2);
+    }
+}
+
+function clearScreen() {
     displayOutput.length = 0;
+    n1.length = 0;
+    n2.length = 0;
     display.textContent = "0";
+}
+
+//works only once!!!
+function deleteLast() {
+    let toDelete = displayOutput[displayOutput.length - 1];
+    displayOutput.pop(toDelete);
+    //display.textContent = displayOutput.join('');
+    populateScreen();
+}
+
+function toCalculate () {
+    populateScreen("=");
+
+    let a = n1.join('');
+    let b = n2.join('');
+    let result = 0;
+
+    if (operator === "/") {
+        result = a / b;
+    } else if (operator === "*") {
+        result = a * b;
+    } else if (operator === "-") {
+        result = a - b;
+    } else if (operator === "+") {
+        result = a + b;
+    }
+
+    populateScreen(result);
+
 }
 
 const buttons = document.querySelectorAll('button');
@@ -60,16 +121,3 @@ buttons.forEach(button => button.addEventListener('mouseover', (e) => e.target.c
 buttons.forEach(button => button.addEventListener('mouseout', (e) => e.target.classList.remove('over')));
 buttons.forEach(button => button.addEventListener('mousedown', (e) => e.target.classList.add('down')));
 buttons.forEach(button => button.addEventListener('mouseup', (e) => e.target.classList.remove('down')));
-
-
-function operate (a, b, operator) {
-    if (operator === "/") {
-        return a / b;
-    } else if (operator === "*") {
-        return a * b;
-    } else if (operator === "-") {
-        return a - b;
-    } else if (operator === "+") {
-        return a + b;
-    }
-}
