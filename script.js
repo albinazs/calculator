@@ -23,6 +23,7 @@ const displayOutput = [];
 const n1 = [];
 const n2 = [];
 let operator = "";
+let result = 0;
 const operators = ["/", "*", "-", "+"];
 const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
@@ -47,15 +48,23 @@ del.addEventListener('click', deleteLast);
 
 function populateScreen(input) { 
     let lastInput = displayOutput[displayOutput.length - 1];
-
-    if (displayOutput.length === 12) {
-        return;
-    } 
-
+    if (display.textContent == "0" && (operators.includes(input))) {
+        n1.push("0");
+        displayOutput.push("0");
+    }
+    //if result is already on screen, work with the result - doesnt work properly
+    if(displayOutput == result && (!operators.includes(lastInput))) {
+        clearScreen();
+    }
     if (operators.includes(lastInput) && operators.includes(input)) {
         displayOutput.pop(lastInput);
     }
-
+    if ((operators.includes(lastInput) || lastInput == "=") && input ==="=") {
+        return;
+    }
+    if (displayOutput.length === 12) {
+        return;
+    } 
     //if(input === "." && displayOutput.find(item => item ===".")) {
         //return;
     //}
@@ -80,27 +89,17 @@ function updateInputVars(input) {
     }
 }
 
-function clearScreen() {
-    displayOutput.length = 0;
-    n1.length = 0;
-    n2.length = 0;
-    display.textContent = "0";
-}
-
-//works only once!!!
-function deleteLast() {
-    let toDelete = displayOutput[displayOutput.length - 1];
-    displayOutput.pop(toDelete);
-    //display.textContent = displayOutput.join('');
-    populateScreen();
-}
-
 function toCalculate () {
-    populateScreen("=");
+    populateScreen("="); // doesnt work - overriden by result
+    
+    if(n2.length === 0) {
+        return;
+    }
 
     let a = n1.join('');
     let b = n2.join('');
-    let result = 0;
+
+    console.log(a, b);
 
     if (operator === "/") {
         result = a / b;
@@ -109,11 +108,31 @@ function toCalculate () {
     } else if (operator === "-") {
         result = a - b;
     } else if (operator === "+") {
-        result = a + b;
+        result = parseInt(a) + parseInt(b);
     }
-
+    //doesn't work with numbers with length > 12 
+    if (result.toString().length > 12) {
+        result = result.toString().slice(0,12);
+    }
+    clearScreen();
     populateScreen(result);
+    console.log(result);
 
+}
+
+function clearScreen() {
+    displayOutput.length = 0;
+    n1.length = 0;
+    n2.length = 0;
+    display.textContent = "0";
+}
+
+//works only once!!! and bug when called after calculation (removes the whole result)
+function deleteLast() {
+    let toDelete = displayOutput[displayOutput.length - 1];
+    displayOutput.pop(toDelete);
+    //display.textContent = displayOutput.join('');
+    populateScreen();
 }
 
 const buttons = document.querySelectorAll('button');
