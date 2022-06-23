@@ -13,7 +13,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #0F5298
+    color: #0F5298;
 }
 
 main {
@@ -25,14 +25,23 @@ main {
 
 .frame {
     background-color: #0F5298;
-    height: 450px;
+    height: 550px;
     width: 350px;
     padding: 20px;
     border-radius: 20px;
 }
 
+.calcDisplay {
+    height: 40px;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+    font-size: 30px;
+    color: rgb(210, 207, 207);
+}
+
 .display {
-    height: 80px;
+    height: 140px;
     display: flex;
     justify-content: end;
     align-items: flex-end;
@@ -57,6 +66,7 @@ button {
     color: rgb(192, 195, 196);
     font-size: 25px;
     flex: 1;
+    cursor: pointer;
 }
 
 #clearAll,
@@ -81,10 +91,11 @@ footer img {
     cursor: pointer;   
 }
 
-.over {
-    background-color: #66D3FA;
-}
-
 .down {
     background-color: blueviolet;
+}
+
+button:hover {
+    background-color: #66D3FA;
+    transition: 0.5s ease-in-out;
 }
