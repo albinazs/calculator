@@ -1,23 +1,11 @@
 const display = document.querySelector('.display');
 const calcDisplay = document.querySelector('.calcDisplay');
-const btn1 = document.querySelector('#one');
-const btn2 = document.querySelector('#two');
-const btn3 = document.querySelector('#three');
-const btn4 = document.querySelector('#four');
-const btn5 = document.querySelector('#five');
-const btn6 = document.querySelector('#six');
-const btn7 = document.querySelector('#seven');
-const btn8 = document.querySelector('#eight');
-const btn9 = document.querySelector('#nine');
-const btn0 = document.querySelector('#zero');
-const dot = document.querySelector('#dot');
 const clearAll = document.querySelector('#clearAll');
 const del = document.querySelector('#delete');
-const divide = document.querySelector('#divide');
-const multiply = document.querySelector('#multiply');
-const substract = document.querySelector('#substract');
-const add = document.querySelector('#add');
+const numberButtons = document.querySelectorAll('[data-number]');
+const operationButtons = document.querySelectorAll('[data-operation]');
 const equal = document.querySelector('#equal');
+
 
 display.textContent = "0";
 calcDisplay.textContent = "";
@@ -30,21 +18,8 @@ let result = 0;
 const operators = ["/", "*", "-", "+"];
 const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
-btn1.addEventListener('click', () => populateScreen("1"));
-btn2.addEventListener('click', () => populateScreen("2"));
-btn3.addEventListener('click', () => populateScreen("3"));
-btn4.addEventListener('click', () => populateScreen("4"));
-btn5.addEventListener('click', () => populateScreen("5"));
-btn6.addEventListener('click', () => populateScreen("6"));
-btn7.addEventListener('click', () => populateScreen("7"));
-btn8.addEventListener('click', () => populateScreen("8"));
-btn9.addEventListener('click', () => populateScreen("9"));
-btn0.addEventListener('click', () => populateScreen("0"));
-dot.addEventListener('click', () => populateScreen("."));
-divide.addEventListener('click', () => populateScreen("/"));
-multiply.addEventListener('click', () => populateScreen("*"));
-substract.addEventListener('click', () => populateScreen("-"));
-add.addEventListener('click', () => populateScreen("+"));
+numberButtons.forEach(button => button.addEventListener('click', () => populateScreen(button.textContent)));
+operationButtons.forEach(button => button.addEventListener('click', () => populateScreen(button.textContent)));
 equal.addEventListener('click', toCalculate);
 clearAll.addEventListener('click', () => {clearScreen(), clearCalcScreen()});
 del.addEventListener('click', deleteLast);
@@ -127,8 +102,7 @@ function toCalculate () {
     } else if (operator === "+") {
         result = parseInt(a) + parseInt(b);
     }
-    //doesn't work with numbers with length > 12 
-    //convert function
+
     if (result.toString().length > 12) {
         result = result.toString().slice(0,12);
     }
@@ -159,6 +133,3 @@ function deleteLast() {
 }
 
 const buttons = document.querySelectorAll('button');
-
-buttons.forEach(button => button.addEventListener('mousedown', (e) => e.target.classList.add('down')));
-buttons.forEach(button => button.addEventListener('mouseup', (e) => e.target.classList.remove('down')));
