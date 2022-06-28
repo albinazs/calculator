@@ -69,15 +69,15 @@ function toCalculate() {
     let result;
     const last = parseFloat(lastOperand);
     const current = parseFloat(currentOperand);
-    console.log(last);
-    console.log(current);
     if(isNaN(last) || isNaN(current)) return;
+    //to add handle further input
+    if (current == "0") {
+        alert("You can't divide by 0!");
+        return;
+    } 
     switch(operator) {
         case "/":  
-        if (last === 0) {
-            alert("You can't divide by 0!");
-            return null;
-        } else result = last / current;
+            result = last / current;
             break;
         case "*":
             result = last * current;

@@ -6,14 +6,14 @@ body {
     min-height: 100vh;
     box-sizing: border-box;
     font-family: Roboto, sans-serif;
-    background-color: #D5F3FE;
+    background: linear-gradient(to right, #aa64c5, #e78882);
 }
 
 header {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #0F5298;
+    color: #f6f7f9;
 }
 
 main {
@@ -24,59 +24,53 @@ main {
 }
 
 .frame {
-    background-color: #0F5298;
-    height: 550px;
-    width: 350px;
-    padding: 20px;
-    border-radius: 20px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    background-color: #211316;
+    padding-top: 30px;
+}
+
+.output {
+    grid-column: 1 / -1;
+    background-color: #211316;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    word-wrap: break-word;
+    word-break: break-all;
+    padding: 10px;
+
 }
 
 .calcDisplay {
-    height: 40px;
-    display: flex;
-    justify-content: end;
-    align-items: flex-end;
     font-size: 30px;
     color: rgb(210, 207, 207);
 }
 
 .display {
-    height: 140px;
-    display: flex;
-    justify-content: end;
-    align-items: flex-end;
     font-size: 50px;
     color: white;
-    padding-bottom: 20px;
 }
 
-.container {
-    height: 70px;
-    display: flex;
-    justify-content: space-around;
-}
-
-button {
+.frame > button {
     background-color: #0F5298;
-    border: none;
-    /*box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;*/
-    border: solid thin;
-    border-color: #245d9a;
-    border-radius: 20px;
-    color: rgb(192, 195, 196);
+    outline: none;
+    border: solid thin white;
+    background-color: rgb(244, 247, 249, .85);
+    color: #211316;
     font-size: 25px;
-    flex: 1;
     cursor: pointer;
 }
 
 #clearAll,
-#delete,
-#divide,
-#multiply,
-#substract,
-#add,
-#equal {
-    color: #66D3FA;
+#delete {
+    grid-column: span 2;
 }
 
 footer {
@@ -89,10 +83,6 @@ footer img {
     height: 25px;
     margin: 5px;
     cursor: pointer;   
-}
-
-.down {
-    background-color: blueviolet;
 }
 
 button:hover {
