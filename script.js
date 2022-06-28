@@ -1,28 +1,106 @@
-const display = document.querySelector('.display');
-const calcDisplay = document.querySelector('.calcDisplay');
+const currentOperandTextElement = document.querySelector('.display');
+const lastOperandTextElement = document.querySelector('.calcDisplay');
 const clearAll = document.querySelector('#clearAll');
 const del = document.querySelector('#delete');
 const numberButtons = document.querySelectorAll('[data-number]');
 const operationButtons = document.querySelectorAll('[data-operation]');
 const equal = document.querySelector('#equal');
 
-
-display.textContent = "0";
-calcDisplay.textContent = "";
-const displayOutput = [];
-const calcDisplayOutput = [];
-const n1 = [];
-const n2 = [];
+currentOperandTextElement.textContent = "0";
+let currentOperand = "";
+let lastOperand = "";
 let operator = "";
-let result = 0;
-const operators = ["/", "*", "-", "+"];
-const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
-numberButtons.forEach(button => button.addEventListener('click', () => populateScreen(button.textContent)));
-operationButtons.forEach(button => button.addEventListener('click', () => populateScreen(button.textContent)));
-equal.addEventListener('click', toCalculate);
-clearAll.addEventListener('click', () => {clearScreen(), clearCalcScreen()});
-del.addEventListener('click', deleteLast);
+numberButtons.forEach(button => button.addEventListener('click', () => {
+    appendNumber(button.textContent);
+    updateDisplay();
+    })
+);
+
+operationButtons.forEach(button => button.addEventListener('click', () => {
+    chooseOperation(button.textContent);
+    updateDisplay();
+    })
+);
+
+equal.addEventListener('click', () => {
+    toCalculate()
+    updateDisplay()
+});
+
+clearAll.addEventListener('click', () => {
+    toClear()
+    updateDisplay()
+});
+
+del.addEventListener('click', () => {
+    toDelete()
+    updateDisplay()
+});
+
+function appendNumber(number) {
+    currentOperand += number;
+};
+
+function updateDisplay() {
+    currentOperandTextElement.textContent = currentOperand;
+    if(operator != null) {
+        lastOperandTextElement.textContent = `${lastOperand} ${operator}`;
+    } else {
+        lastOperandTextElement.textContent = "";
+    };
+    
+};
+
+function chooseOperation(operation) {
+    if (currentOperand === "") return;
+    if (lastOperand !== "") {
+        toCalculate();
+    }
+    operator = operation;
+    lastOperand = currentOperand;
+    currentOperand = "";
+};
+
+function toCalculate() {
+    let result;
+    const last = parseFloat(lastOperand);
+    const current = parseFloat(currentOperand);
+    console.log(last);
+    console.log(current);
+    if(isNaN(last) || isNaN(current)) return;
+    switch(operator) {
+        case "/":
+            result = last / current;
+            break;
+        case "*":
+            result = last * current;
+            break;
+        case "-":
+            result = last - current;
+            break;
+        case "+":
+            result = last + current;
+            break;
+        default: return;            
+    }
+    currentOperand = result;
+    operator = undefined;
+    lastOperand = "";
+};
+
+//deal with 0
+function toClear() {
+    currentOperand = "";
+    lastOperand = "";
+    operator = "";
+};
+
+function toDelete() {
+    currentOperand = currentOperand
+    .toString()
+    .slice(0, -1)
+};
 
 function populateScreen(input) { 
     let lastInput = displayOutput[displayOutput.length - 1];
@@ -60,24 +138,8 @@ function populateScreen(input) {
     updateInputVars(input);
 }
 
-function updateInputVars(input) {
-    if(operators.includes(operator) && operators.includes(input)) {
-        toCalculate();
-        operator = input;
-        result = n1;
-    }
-    else if (operators.includes(input)) {
-        operator = input;
-    }
-    else if (numbers.includes(input) && (!operators.some(operator => displayOutput.includes(operator)))) 
-    {
-        n1.push(input);
-    } else if (numbers.includes(input) && (operators.some(operator => displayOutput.includes(operator)))) {
-        n2.push(input);
-    }
-}
 
-function toCalculate () {
+function oldToCalculate () {
     populateScreen("=");
     
     calcDisplay.textContent = displayOutput.join("");
@@ -111,25 +173,3 @@ function toCalculate () {
     operator = "";
 }
 
-function clearScreen() {
-    displayOutput.length = 0;
-    n1.length = 0;
-    n2.length = 0;
-    display.textContent = "0";
-
-}
-
-function clearCalcScreen () {
-    calcDisplayOutput.length = 0;
-    calcDisplay.textContent = "";
-}
-
-//works only once!!! and bug when called after calculation (removes the whole result)
-function deleteLast() {
-    let toDelete = displayOutput[displayOutput.length - 1];
-    displayOutput.pop(toDelete);
-    //display.textContent = displayOutput.join('');
-    populateScreen();
-}
-
-const buttons = document.querySelectorAll('button');
