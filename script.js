@@ -38,7 +38,10 @@ del.addEventListener('click', () => {
     updateDisplay()
 });
 
+window.addEventListener('keydown', handleKeyboardInput);
+
 function appendNumber(number) {
+    if (number === "." && currentOperand.includes(".")) return;
     currentOperand += number;
 };
 
@@ -70,8 +73,11 @@ function toCalculate() {
     console.log(current);
     if(isNaN(last) || isNaN(current)) return;
     switch(operator) {
-        case "/":
-            result = last / current;
+        case "/":  
+        if (last === 0) {
+            alert("You can't divide by 0!");
+            return null;
+        } else result = last / current;
             break;
         case "*":
             result = last * current;
@@ -84,12 +90,11 @@ function toCalculate() {
             break;
         default: return;            
     }
-    currentOperand = result;
+    currentOperand = Math.round(result * 100000) / 100000;
     operator = undefined;
     lastOperand = "";
 };
 
-//deal with 0
 function toClear() {
     currentOperand = "";
     lastOperand = "";
@@ -101,6 +106,29 @@ function toDelete() {
     .toString()
     .slice(0, -1)
 };
+
+function handleKeyboardInput(e) {
+    if ((e.key >= 0 && e.key <=9) || e.key === '.') {
+        appendNumber(e.key);
+        updateDisplay();
+    }
+    if (e.key === '/' || e.key === "*" || e.key === "-" || e.key === "+") {
+        chooseOperation(e.key);
+        updateDisplay();
+    }
+    if (e.key === '=' || e.key === 'Enter') {
+        toCalculate();
+        updateDisplay();
+    }
+    if (e.key === 'Escape') {
+        toClear()
+        updateDisplay()
+    }
+    if (e.key === 'Backspace') {
+        toDelete()
+        updateDisplay()
+    }
+}
 
 function populateScreen(input) { 
     let lastInput = displayOutput[displayOutput.length - 1];
