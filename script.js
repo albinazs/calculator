@@ -48,6 +48,10 @@ function appendNumber(number) {
 };
 
 function updateDisplay() {
+    if(lastOperand === "" && currentOperand === "" ) {
+        currentOperandTextElement.textContent = "0";
+        return;
+    }
     currentOperandTextElement.textContent = currentOperand;
     if(operator != null) {
         lastOperandTextElement.textContent = `${lastOperand} ${operator}`;
@@ -58,7 +62,11 @@ function updateDisplay() {
 };
 
 function chooseOperation(operation) {
-    //if (currentOperand === "") return;
+    if(lastOperand === "" && currentOperand === "") return;
+    if(lastOperand !== "" && currentOperand === "") {
+        operator = operation;
+        return;
+    }
     if (lastOperand !== "") {
         toCalculate();
     }
@@ -136,12 +144,6 @@ function handleKeyboardInput(e) {
     if (e.key === 'Backspace') {
         toDelete()
         updateDisplay()
-    }
-}
-
-function populateScreen(input) { 
-    if (operators.includes(lastInput) && operators.includes(input)) {
-        displayOutput.pop(lastInput);
     }
 }
 
