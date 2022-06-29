@@ -10,6 +10,7 @@ currentOperandTextElement.textContent = "0";
 let currentOperand = "";
 let lastOperand = "";
 let operator = "";
+shouldResetScreen = false;
 
 numberButtons.forEach(button => button.addEventListener('click', () => {
     appendNumber(button.textContent);
@@ -41,7 +42,8 @@ del.addEventListener('click', () => {
 window.addEventListener('keydown', handleKeyboardInput);
 
 function appendNumber(number) {
-    if (number === "." && currentOperand.includes(".")) return;
+    if(shouldResetScreen) resetScreen()
+    if(number === "." && currentOperand.includes(".")) return;
     currentOperand += number;
 };
 
@@ -56,13 +58,14 @@ function updateDisplay() {
 };
 
 function chooseOperation(operation) {
-    if (currentOperand === "") return;
+    //if (currentOperand === "") return;
     if (lastOperand !== "") {
         toCalculate();
     }
     operator = operation;
     lastOperand = currentOperand;
     currentOperand = "";
+    
 };
 
 function toCalculate() {
@@ -70,9 +73,9 @@ function toCalculate() {
     const last = parseFloat(lastOperand);
     const current = parseFloat(currentOperand);
     if(isNaN(last) || isNaN(current)) return;
-    //to add handle further input
     if (current == "0") {
         alert("You can't divide by 0!");
+        resetScreen();
         return;
     } 
     switch(operator) {
@@ -93,6 +96,7 @@ function toCalculate() {
     currentOperand = Math.round(result * 100000) / 100000;
     operator = undefined;
     lastOperand = "";
+    shouldResetScreen = true;
 };
 
 function toClear() {
@@ -106,6 +110,11 @@ function toDelete() {
     .toString()
     .slice(0, -1)
 };
+
+function resetScreen() {
+    currentOperand = "";
+    shouldResetScreen = false;
+}
 
 function handleKeyboardInput(e) {
     if ((e.key >= 0 && e.key <=9) || e.key === '.') {
@@ -131,73 +140,11 @@ function handleKeyboardInput(e) {
 }
 
 function populateScreen(input) { 
-    let lastInput = displayOutput[displayOutput.length - 1];
-    console.log(lastInput);
-    if (display.textContent == "0" && result == "0" && (operators.includes(input))) {
-        n1.push("0");
-    }
-    else if (display.textContent == "0" && (operators.includes(input))) {
-        n1.push("0");
-        displayOutput.push("0");
-    }
-    if(displayOutput == result && (numbers.includes(input))) {
-        clearScreen();
-        clearCalcScreen ();
-    }
-    if(displayOutput == result && (operators.includes(input))) {
-        n1.length = 0;
-        n1.push(result);
-    }
     if (operators.includes(lastInput) && operators.includes(input)) {
         displayOutput.pop(lastInput);
     }
-    if ((operators.includes(lastInput) || lastInput == "=") && input ==="=") {
-        return;
-    }
-    if (displayOutput.length === 12) {
-        return;
-    } 
-    //if(input === "." && displayOutput.find(item => item ===".")) {
-        //return;
-    //}
-
-    displayOutput.push(input);
-    display.textContent = displayOutput.join('');
-    updateInputVars(input);
 }
 
 
-function oldToCalculate () {
-    populateScreen("=");
-    
-    calcDisplay.textContent = displayOutput.join("");
 
-    if(n2.length === 0) {
-        return;
-    }
-
-    let a = n1.join('');
-    let b = n2.join('');
-
-    if (operator === "/") {
-        if(b == "0") {
-            alert("You can't divide by zero!");
-            return;
-        }
-        result = a / b;
-    } else if (operator === "*") {
-        result = a * b;
-    } else if (operator === "-") {
-        result = a - b;
-    } else if (operator === "+") {
-        result = parseInt(a) + parseInt(b);
-    }
-
-    if (result.toString().length > 12) {
-        result = result.toString().slice(0,12);
-    }
-    clearScreen();
-    populateScreen(result);
-    operator = "";
-}
 
