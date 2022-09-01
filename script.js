@@ -85,13 +85,15 @@ function toCalculate() {
     const last = parseFloat(lastOperand);
     const current = parseFloat(currentOperand);
     if(isNaN(last) || isNaN(current)) return;
-    if (current == "0") {
-        alert("You can't divide by 0!");
-        resetScreen();
-        return;
-    } 
+
     switch(operator) {
         case "/":  
+            if (current == "0") {
+                alert("You can't divide by 0!");
+                toClear();
+                clearDisplay();
+                return;
+            } 
             result = last / current;
             break;
         case "*":
