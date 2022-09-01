@@ -31,7 +31,7 @@ equal.addEventListener('click', () => {
 
 clearAll.addEventListener('click', () => {
     toClear()
-    updateDisplay()
+    clearDisplay()
 });
 
 del.addEventListener('click', () => {
@@ -58,7 +58,11 @@ function updateDisplay() {
     } else {
         lastOperandTextElement.textContent = "";
     };
-    
+};
+
+function clearDisplay() {
+    currentOperandTextElement.textContent = "0";
+    lastOperandTextElement.textContent = "";
 };
 
 function chooseOperation(operation) {
