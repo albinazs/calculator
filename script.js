@@ -145,7 +145,7 @@ function handleKeyboardInput(e) {
     }
     if (e.key === 'Escape') {
         toClear()
-        updateDisplay()
+        clearDisplay()
     }
     if (e.key === 'Backspace') {
         toDelete()
